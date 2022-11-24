@@ -2,11 +2,13 @@
   "name": "react-frontentd-lib",
   "version": "1.0.0",
   "description": "React frontend library",
-  "private": true,
   "main": "lib/index.js",
   "jsnext:main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "lib/"
+  ],
   "license": "MIT",
   "engines": {
     "npm": ">=8.5.0",
