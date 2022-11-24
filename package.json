@@ -1,5 +1,5 @@
 {
-  "name": "react-frontentd-lib",
+  "name": "@epifanovmd/react-frontentd-lib",
   "version": "1.0.1",
   "description": "React frontend library",
   "main": "lib/index.js",
