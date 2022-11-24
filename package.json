@@ -1,6 +1,6 @@
 {
   "name": "react-frontend-lib",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React frontend library",
   "main": "lib/index.js",
   "jsnext:main": "lib/index.js",
@@ -40,11 +40,13 @@
     "lodash": "^4.17.21",
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.16",
     "yup": "^0.29.3"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
