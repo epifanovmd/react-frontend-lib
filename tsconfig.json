@@ -1,50 +1,42 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "esnext",
+    "module": "commonjs",
     "lib": [
       "es6",
       "es2015",
       "dom"
     ],
-    "outDir": "build",
-    "checkJs": false,
+    "outDir": "./lib",
+    "declaration": true,
+    "declarationDir": "./lib",
     "jsx": "react",
-    "rootDir": ".",
+    "rootDir": "./src",
     "removeComments": true,
-    "noEmit": false,
     "importHelpers": true,
     "downlevelIteration": true,
     "isolatedModules": true,
     "strict": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./",
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": false,
     "noImplicitReturns": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "preserveConstEnums": true,
     "allowJs": true,
     "sourceMap": true,
-    "declaration": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "alwaysStrict": true,
-    "strictNullChecks": true,
     "skipLibCheck": true
   },
   "exclude": [
     "node_modules",
-    "build",
-    "babel.config.js",
-    "webpack.config.js",
+    "build"
+  ],
+  "include": [
+    "src"
   ]
 }

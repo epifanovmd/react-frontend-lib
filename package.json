@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "React frontend library",
   "private": true,
+  "main": "lib/index.js",
+  "jsnext:main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "license": "MIT",
   "engines": {
     "npm": ">=8.5.0",
@@ -20,8 +24,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "build-declarations": "tsc --declaration",
-    "deploy": "gh-pages -d build",
+    "publish": "npm publish",
     "prepare": "npm run build",
     "lint": "eslint \"src/**/*{.ts,.tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*{.ts,.tsx}\"",

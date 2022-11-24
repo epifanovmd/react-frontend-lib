@@ -1,12 +1,11 @@
 const path = require("path");
-const webpack = require("webpack");
 
 module.exports = {
   mode: "production",
   entry: "./src/index.ts",
   output: {
-    path: path.resolve(__dirname, "_bundles"),
-    filename: "lib.js",
+    path: path.resolve(__dirname, "lib"),
+    filename: "index.js",
     libraryTarget: "umd",
     library: "react-frontend-lib",
     umdNamedDefine: true,
@@ -33,7 +32,7 @@ module.exports = {
           { loader: "babel-loader" },
           {
             loader: "ts-loader",
-            options: { happyPackMode: true },
+            options: {},
           },
         ],
       },
