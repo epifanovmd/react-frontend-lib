@@ -15,14 +15,14 @@
     "yarn": ">=1.22.18",
     "node": ">=16.14.2"
   },
-  "homepage": "https://gitlab.com/epifanovmd/react-frontend-lib",
+  "homepage": "https://github.com/epifanovmd/react-frontend-lib",
   "author": {
     "name": "Epifanov Andrei",
     "email": "epifanovmd@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.com:epifanovmd/react-frontend-lib.git"
+    "url": "https://github.com/epifanovmd/react-frontend-lib.git"
   },
   "scripts": {
     "build": "webpack",
