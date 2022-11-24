@@ -3,13 +3,10 @@ const webpack = require("webpack");
 
 module.exports = {
   mode: "production",
-  entry: {
-    lib: "./src/index.ts",
-    "lib.min": "./src/index.ts",
-  },
+  entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "_bundles"),
-    filename: "[name].js",
+    filename: "lib.js",
     libraryTarget: "umd",
     library: "react-frontend-lib",
     umdNamedDefine: true,
