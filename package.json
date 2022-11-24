@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "webpack",
+    "build-declarations": "tsc --declaration",
     "deploy": "gh-pages -d build",
     "prepare": "npm run build",
     "lint": "eslint \"src/**/*{.ts,.tsx}\"",
