@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
+  mode: "production",
   entry: {
     lib: "./src/index.ts",
     "lib.min": "./src/index.ts",
@@ -16,6 +17,14 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },
+  externals: {
+    react: {
+      root: "React",
+      commonjs2: "react",
+      commonjs: "react",
+      amd: "react",
+    },
+  },
   devtool: "source-map",
   plugins: [],
   module: {
@@ -23,7 +32,13 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "awesome-typescript-loader",
+        use: [
+          { loader: "babel-loader" },
+          {
+            loader: "ts-loader",
+            options: { happyPackMode: true },
+          },
+        ],
       },
     ],
   },

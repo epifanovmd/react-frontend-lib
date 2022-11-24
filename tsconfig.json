@@ -15,7 +15,7 @@
     "noEmit": false,
     "importHelpers": true,
     "downlevelIteration": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "strict": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
