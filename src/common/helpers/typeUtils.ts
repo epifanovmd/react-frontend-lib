@@ -18,13 +18,12 @@ type Join<K, P> = K extends string | number
 export type RecursiveObjectType<T, D extends number = 10> = [D] extends [never]
   ? never
   : T extends object
-    ? {
+  ? {
       [K in keyof T]-?: K extends string | number
         ? `${K}` | Join<K, RecursiveObjectType<T[K]>>
         : never;
     }[keyof T]
-    : "";
-
+  : "";
 
 export enum RequestType {
   GET = "get",
@@ -38,4 +37,3 @@ export interface IEmpty {
   [key: string]: any;
   [key: number]: any;
 }
-
