@@ -28,7 +28,7 @@
   "scripts": {
     "build": "webpack",
     "publish": "npm publish",
-    "prepare": "npm run build",
+    "prepare": "npm version patch && npm run build",
     "lint": "eslint \"src/**/*{.ts,.tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*{.ts,.tsx}\"",
     "prettier:fix": "prettier --parser typescript --write src/**/*.{ts,tsx}",
