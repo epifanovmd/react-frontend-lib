@@ -7,7 +7,7 @@ function createConfig(filename, configFile) {
     entry: "./src/index.ts",
     output: {
       path: path.resolve(__dirname, "lib"),
-      filename: "index.cjs.js",
+      filename,
       libraryTarget: "commonjs",
       library: "react-frontend-lib",
       umdNamedDefine: true,
@@ -27,7 +27,7 @@ function createConfig(filename, configFile) {
             {
               loader: "ts-loader",
               options: {
-                configFile: "tsconfig.cjs.json",
+                configFile,
               },
             },
           ],
