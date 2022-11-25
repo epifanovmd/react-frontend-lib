@@ -1,7 +1,8 @@
 const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  mode: "production",
+  mode: "development",
   entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "lib"),
@@ -13,16 +14,8 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },
-  externals: {
-    react: {
-      root: "React",
-      commonjs2: "react",
-      commonjs: "react",
-      amd: "react",
-    },
-  },
+  externals: [nodeExternals()],
   devtool: "source-map",
-  plugins: [],
   module: {
     rules: [
       {
