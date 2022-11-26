@@ -1,10 +1,10 @@
 {
   "name": "react-frontend-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React frontend library",
-  "main": "index.cjs.js",
-  "module": "index.mjs.js",
-  "types": "index.d.ts",
+  "main": "/libindex.cjs.js",
+  "module": "lib/index.mjs.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib/",
     "README.md"
