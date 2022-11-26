@@ -1,6 +1,6 @@
 {
   "name": "react-frontend-lib",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "React frontend library",
   "main": "/lib/index.cjs.js",
   "module": "lib/index.mjs.js",
@@ -11,7 +11,6 @@
   ],
   "license": "MIT",
   "engines": {
-
     "npm": ">=8.5.0",
     "yarn": ">=1.22.18",
     "node": ">=16.14.2"
