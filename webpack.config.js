@@ -17,7 +17,7 @@ function createConfig(filename, configFile) {
       extensions: [".ts", ".tsx", ".js"],
     },
     externals: [nodeExternals()],
-    devtool: false,
+    devtool: "eval",
     module: {
       rules: [
         {
