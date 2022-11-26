@@ -17,7 +17,7 @@ function createConfig(filename, configFile) {
       extensions: [".ts", ".tsx", ".js"],
     },
     externals: [nodeExternals()],
-    devtool: "source-map",
+    devtool: false,
     module: {
       rules: [
         {
