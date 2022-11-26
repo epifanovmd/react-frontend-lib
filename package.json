@@ -11,6 +11,7 @@
   ],
   "license": "MIT",
   "engines": {
+
     "npm": ">=8.5.0",
     "yarn": ">=1.22.18",
     "node": ">=16.14.2"
@@ -29,7 +30,7 @@
     "VERSION:PATCH": "npm version patch",
     "VERSION:MINOR": "npm version minor",
     "VERSION:MAJOR": "npm version major",
-    "prepare": "npm run build",
+    "prepare": "tsc",
     "lint": "eslint \"src/**/*{.ts,.tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*{.ts,.tsx}\"",
     "prettier:fix": "prettier --parser typescript --write src/**/*.{ts,tsx}",
