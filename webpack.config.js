@@ -8,9 +8,10 @@ function createConfig(filename, configFile) {
     output: {
       path: path.resolve(__dirname, "lib"),
       filename,
-      libraryTarget: "commonjs",
       library: "react-frontend-lib",
       umdNamedDefine: true,
+      libraryTarget: "umd",
+      globalObject: "this",
     },
     resolve: {
       extensions: [".ts", ".tsx", ".js"],
