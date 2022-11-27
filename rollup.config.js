@@ -4,6 +4,8 @@ import resolve from "@rollup/plugin-node-resolve";
 import external from "rollup-plugin-peer-deps-external";
 import { terser } from "rollup-plugin-terser";
 import typescript from "@rollup/plugin-typescript";
+import autoprefixer from "autoprefixer";
+import postcss from "rollup-plugin-postcss";
 
 export default {
   input: "src/index.ts",
@@ -24,10 +26,17 @@ export default {
     external(),
     babel({
       exclude: "node_modules/**",
-      plugins: ["external-helpers"],
+      plugins: ["external-helpers", "babel-plugin-styled-components"],
     }),
     resolve(),
     commonjs(),
+    postcss({
+      extensions: ["css", "scss"],
+      use: {
+        sass: true,
+      },
+      plugins: [autoprefixer],
+    }),
     terser(),
     typescript(),
   ],
