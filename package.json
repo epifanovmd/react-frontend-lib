@@ -45,6 +45,7 @@
     "lodash": "^4.17.21",
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
+    "rc-textarea": "^0.4.7",
     "react-transition-group": "^4.4.5",
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.16",

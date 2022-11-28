@@ -5,7 +5,11 @@ import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
 import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import styled from "styled-components";
-import { useCompoundProps, useOutsideClick } from "../../../common";
+import {
+  useCompoundProps,
+  useKeyPress,
+  useOutsideClick,
+} from "../../../common";
 import { observer } from "mobx-react-lite";
 import { Flex, FlexProps } from "../../common";
 
@@ -14,6 +18,9 @@ interface IModalProps {
   open?: boolean;
   onClose?: () => void;
   children?: any;
+
+  overlayClose?: boolean;
+  escapeClose?: boolean;
 }
 
 interface IModalStatic {
@@ -26,6 +33,8 @@ const _Modal: FC<IModalProps> & IModalStatic = ({
   disablePortal,
   open,
   onClose,
+  overlayClose,
+  escapeClose,
   children,
 }) => {
   const modalRef = useRef<any>();
@@ -38,9 +47,13 @@ const _Modal: FC<IModalProps> & IModalStatic = ({
   );
 
   const ref = useOutsideClick(event => {
-    if (modalRef.current === event.target) {
+    if (modalRef.current === event.target && overlayClose) {
       onClose && onClose();
     }
+  });
+
+  useKeyPress("Escape", () => {
+    escapeClose && onClose && onClose();
   });
 
   const modal = (

@@ -45,6 +45,8 @@ const StyledPlaceholder = styled(Flex)<{ $isFocus?: boolean }>`
   transform: translateY(-50%);
   transition: all 100ms ease-in;
   color: #00000050;
+  user-select: none;
+  font-size: 14px;
 
   ${({ $isFocus }) =>
     $isFocus
@@ -54,5 +56,4 @@ const StyledPlaceholder = styled(Flex)<{ $isFocus?: boolean }>`
           font-size: 10px;
         `
       : ""};
-  z-index: 1;
 `;

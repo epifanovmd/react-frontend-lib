@@ -19,6 +19,7 @@ import { IPlaceholderProps, Placeholder } from "../placeholder";
 import { Flex, FlexProps } from "../../common";
 import { CSSTransitionProps } from "react-transition-group/CSSTransition";
 import { observer } from "mobx-react-lite";
+import "./transition.scss";
 
 interface IProps
   extends Omit<
@@ -184,7 +185,7 @@ export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
       />
 
       <CSSTransition
-        classNames={"select select-fade"}
+        classNames={"select"}
         timeout={0}
         unmountOnExit={true}
         {...innerProps.transition}

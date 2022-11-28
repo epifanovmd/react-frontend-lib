@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Input, ISelectItem, Modal, Select } from "./ui";
+import { Input, ISelectItem, Modal, Select, Textarea } from "./ui";
 import { useBooleanState } from "../common";
-import { ContextItem } from "./common";
+import { Col, ContextItem } from "./common";
 import { Button } from "./ui/button";
 
 export const Playground: FC = observer(() => {
@@ -14,7 +14,7 @@ export const Playground: FC = observer(() => {
   };
 
   return (
-    <div>
+    <Col paddingBottom={200}>
       <div>
         <div>Кнопки</div>
         <br />
@@ -50,18 +50,45 @@ export const Playground: FC = observer(() => {
       <br />
 
       <ContextItem ctx={["12"]} onClick={onOpen}>
-        <Button>Открыть модальное окно</Button>
+        <Button>Модальное окно</Button>
       </ContextItem>
-      <Input placeholder={"435"} onFocus={console.log}>
+      <br />
+
+      <div>Элеменнты ввода</div>
+      <br />
+
+      <Input
+        placeholder={"Текстовое поле"}
+        onFocus={console.log}
+        touch={true}
+        error={"Ошибка"}
+      >
         <Input.Placeholder color={"black"}>
           <Input.Placeholder.Active color={"green"} />
         </Input.Placeholder>
         <Input.Wrap />
         <Input.Error bg={"yellow"} />
       </Input>
+      <br />
+
+      <Textarea
+        autoSize={true}
+        placeholder={"Текстовое поле"}
+        onFocus={console.log}
+        touch={true}
+        error={"Ошибка"}
+      >
+        <Textarea.Placeholder color={"black"}>
+          <Textarea.Placeholder.Active color={"green"} />
+        </Textarea.Placeholder>
+        <Textarea.Wrap />
+        <Textarea.Error bg={"yellow"} />
+      </Textarea>
+
+      <br />
       <Select
         mt={16}
-        placeholder={"123"}
+        placeholder={"Выпадающий список"}
         selected={item}
         items={[
           {
@@ -77,7 +104,7 @@ export const Playground: FC = observer(() => {
         error={"Ошибка"}
         onChange={onSetItem}
       >
-        <Select.Transition timeout={300} classNames={"modal"} />
+        <Select.Transition timeout={200} />
         <Select.Error color={"brown"} />
       </Select>
 
@@ -85,7 +112,34 @@ export const Playground: FC = observer(() => {
         <Modal.Overlay bg={"red"} />
         <Modal.Content bg={"yellow"} />
         <div>Content</div>
+        <div>
+          <Select
+            mt={16}
+            placeholder={"Выпадающий список"}
+            selected={item}
+            items={[
+              {
+                key: "1",
+                label: "1",
+              },
+              {
+                key: "2",
+                label: "2",
+              },
+              {
+                key: "3",
+                label: "3",
+              },
+            ]}
+            touch={true}
+            error={"Ошибка"}
+            onChange={onSetItem}
+          >
+            <Select.Transition timeout={300} />
+            <Select.Error color={"brown"} />
+          </Select>
+        </div>
       </Modal>
-    </div>
+    </Col>
   );
 });

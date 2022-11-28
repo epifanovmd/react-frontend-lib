@@ -1,0 +1,14 @@
+.select-enter {
+  opacity: 0;
+}
+.select-enter-active {
+  opacity: 1;
+  transition: all 200ms ease-out;
+}
+.select-exit {
+  opacity: 1;
+}
+.select-exit-active {
+  opacity: 0;
+  transition: all 200ms ease-in;
+}

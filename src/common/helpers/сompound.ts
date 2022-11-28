@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { stringUnCapitalize } from "./string";
+import { stringToLowerCase } from "./string";
 
 interface Iterable<T> {
   [Symbol.iterator](): Iterator<T>;
@@ -65,7 +65,7 @@ export function getCompoundProps<
 
     for (const key of parameters) {
       if (el.type === (compoundComponent as any)[key]) {
-        (result as any)[stringUnCapitalize(key as string)] = el.props;
+        (result as any)[stringToLowerCase(key as string)] = el.props;
         isCompound = true;
         break;
       }

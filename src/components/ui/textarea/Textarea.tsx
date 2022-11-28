@@ -1,39 +1,53 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import RCTextarea, { TextAreaProps } from "rc-textarea";
 import styled, { css } from "styled-components";
 import { useCompoundProps } from "../../../common";
 import { Flex, FlexProps, useFlexProps } from "../../common";
 import { Placeholder } from "../Placeholder";
 import { observer } from "mobx-react-lite";
 
-export interface IInputProps
+export interface ITextAreaProps
   extends Omit<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      "color" | "height" | "width" | "style" | "onChange" | "onBlur" | "onFocus"
+      TextAreaProps,
+      | "color"
+      | "height"
+      | "width"
+      | "style"
+      | "onChange"
+      | "onBlur"
+      | "onFocus"
+      | "wrap"
     >,
     FlexProps {
   touch?: boolean;
   error?: string;
 
   onChange?: (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLTextAreaElement>,
     name?: string,
   ) => void;
 
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>, name?: string) => void;
-  onFocus?: (event: React.FocusEvent<HTMLInputElement>, name?: string) => void;
+  onBlur?: (
+    event: React.FocusEvent<HTMLTextAreaElement>,
+    name?: string,
+  ) => void;
+  onFocus?: (
+    event: React.FocusEvent<HTMLTextAreaElement>,
+    name?: string,
+  ) => void;
 
   textarea?: boolean;
 
   children?: React.ReactNode;
 }
 
-interface IInputStatic {
+interface ITextAreaStatic {
   Wrap: (props: React.HTMLAttributes<HTMLDivElement> & FlexProps) => null;
   Error: (props: React.HTMLAttributes<HTMLDivElement> & FlexProps) => null;
   Placeholder: typeof Placeholder;
 }
 
-const _Input: FC<IInputProps> & IInputStatic = ({
+const _TextArea: FC<ITextAreaProps> & ITextAreaStatic = ({
   children,
   name,
   touch,
@@ -45,10 +59,10 @@ const _Input: FC<IInputProps> & IInputStatic = ({
   placeholder,
   ...rest
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<RCTextarea>(null);
   const innerProps = useCompoundProps(
     { children },
-    _Input,
+    _TextArea,
     "Wrap",
     "Error",
     "Placeholder",
@@ -63,7 +77,7 @@ const _Input: FC<IInputProps> & IInputStatic = ({
   }, [value]);
 
   const onAnimationStart = useCallback(
-    (event: React.AnimationEvent<HTMLInputElement>) => {
+    (event: React.AnimationEvent<HTMLTextAreaElement>) => {
       if (event.animationName === "onAutoFillStart") {
         setFloating(true);
       } else if (event.animationName === "onAutoFillCancel") {
@@ -74,7 +88,7 @@ const _Input: FC<IInputProps> & IInputStatic = ({
   );
 
   const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       onChange?.(event, name);
       if (event.target.value) {
         setFloating(true);
@@ -86,7 +100,7 @@ const _Input: FC<IInputProps> & IInputStatic = ({
   );
 
   const handleBlur = useCallback(
-    (event: React.FocusEvent<HTMLInputElement>) => {
+    (event: React.FocusEvent<HTMLTextAreaElement>) => {
       onBlur?.(event, name);
     },
     [name, onBlur],
@@ -98,13 +112,26 @@ const _Input: FC<IInputProps> & IInputStatic = ({
     }
   }, []);
 
+  const handleClickWrap = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (innerProps.wrap) {
+        innerProps.wrap.onClick?.(event);
+      }
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    },
+    [innerProps.wrap],
+  );
+
   return (
     <Wrap
       $isReadOnlyWrap={readOnly}
       $isError={Boolean(touch && error)}
       {...innerProps.wrap}
+      onClick={handleClickWrap}
     >
-      <StyledInput
+      <StyledTextArea
         ref={inputRef}
         {...ownProps}
         style={style}
@@ -128,13 +155,13 @@ const _Input: FC<IInputProps> & IInputStatic = ({
   );
 };
 
-_Input.Wrap = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
+_TextArea.Wrap = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
   null;
-_Input.Placeholder = (_props => null) as typeof Placeholder;
-_Input.Error = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
+_TextArea.Placeholder = (_props => null) as typeof Placeholder;
+_TextArea.Error = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
   null;
 
-export const Input = observer(_Input) as typeof _Input;
+export const Textarea = observer(_TextArea) as typeof _TextArea;
 
 const Wrap = styled(Flex)<{ $isError?: boolean; $isReadOnlyWrap?: boolean }>`
   background: transparent;
@@ -163,13 +190,18 @@ const Error = styled(Flex)`
   left: 16px;
 `;
 
-const StyledInput = styled.input<{ isReadOnly?: boolean }>`
+const StyledTextArea = styled(RCTextarea)<{ isReadOnly?: boolean }>`
+  resize: none;
+  overflow: hidden;
   background: transparent;
   outline: none;
   border: none;
   width: 100%;
-  padding: 16px;
+  border-radius: 0;
+  margin: 16px 0;
   font-size: 14px;
+  padding: 0 16px;
+  display: block;
 
   @keyframes onAutoFillStart {
     // Workaround to force nesting this keyframe
