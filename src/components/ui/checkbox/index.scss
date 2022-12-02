@@ -1,0 +1,25 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #0000001f;
+  padding: 1px;
+  height: 18px;
+  width: 18px;
+
+  &-wrap {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+
+  &-title {
+    margin-left: 16px;
+  }
+
+  &__active {
+
+  }
+}

@@ -1,0 +1,100 @@
+.textarea {
+  resize: none;
+  overflow: hidden;
+  background: transparent;
+  outline: none;
+  border: none;
+  width: 100%;
+  border-radius: 0;
+  margin: 16px 0;
+  font-size: 14px;
+  padding: 0 16px;
+  display: block;
+
+  &-wrap {
+    position: relative;
+    background: transparent;
+    border: 1px solid #0000001f;
+
+    width: 100%;
+    min-width: 320px;
+    cursor: text;
+    border-radius: 8px;
+
+    &__read-only {
+      cursor: default;
+      border: 1px solid #0000001f !important;
+    }
+
+    &__error {
+      border: 1px solid red;
+    }
+  }
+
+  &-error {
+    font-size: 11px;
+    color: red;
+    position: absolute;
+
+    bottom: 0;
+    left: 16px;
+  }
+
+  &__read-only {
+    cursor: default;
+  }
+
+  @keyframes onAutoFillStart {
+    // Workaround to force nesting this keyframe
+    0% {
+      position: relative;
+    }
+    100% {
+      position: relative;
+    }
+  }
+  @keyframes onAutoFillCancel {
+    // Workaround to force nesting this keyframe
+    0% {
+      position: relative;
+    }
+    100% {
+      position: relative;
+    }
+  }
+
+  &:-webkit-autofill {
+    // Expose a hook for JavaScript when auto fill is shown.
+    // JavaScript can capture 'animationstart' events
+    animation: onAutoFillStart 5000s linear;
+  }
+
+  // Expose a hook for JS onAutoFillCancel
+  // JavaScript can capture 'animationstart' events
+  animation: onAutoFillCancel 5000s linear;
+
+  &:invalid {
+    box-shadow: none;
+  }
+
+  &::-webkit-contacts-auto-fill-button,
+  &::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+  }
+
+  &::-ms-clear,
+  &::-ms-reveal {
+    display: none;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    border-radius: 8px;
+  }
+}

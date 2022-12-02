@@ -1,59 +1,48 @@
-import React, { FC } from "react";
-import styled, { css } from "styled-components";
+import React, { ComponentProps, FC } from "react";
 import { useCompoundProps } from "../../../common";
-import { Flex, FlexProps } from "../../common";
 
-export interface IPlaceholderProps extends FlexProps {
+import "./index.scss";
+import classNames from "classnames";
+
+export interface IPlaceholderProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   isFocus?: boolean;
   placeholder?: string;
-  children?: React.ReactNode;
+  cnPrefix?: string;
 }
 
 interface IPlaceholderStatic {
-  Active: (props: FlexProps) => null;
+  Active: (props: IPlaceholderProps) => null;
 }
 
 const _Placeholder: FC<IPlaceholderProps> & IPlaceholderStatic = ({
   children,
   isFocus,
   placeholder,
+  cnPrefix,
   ...rest
 }) => {
+  const prefix = `${classNames({ [`${cnPrefix}-`]: cnPrefix })}`;
   const innerProps = useCompoundProps({ children }, _Placeholder, "Active");
 
   return (
-    <StyledPlaceholder
+    <div
       {...rest}
-      {...(isFocus ? innerProps.active : {})}
-      $isFocus={isFocus}
+      {...(isFocus ? innerProps.active : ({} as any))}
+      className={classNames(
+        `${prefix}placeholder`,
+        { [`${prefix}placeholder__focus`]: isFocus },
+        {
+          [`${prefix}${innerProps.active?.className || ""}`]:
+            isFocus && innerProps.active?.className,
+        },
+      )}
     >
       {placeholder}
-    </StyledPlaceholder>
+    </div>
   );
 };
 
-_Placeholder.Active = (
-  _props: React.HTMLAttributes<HTMLDivElement> & FlexProps,
-) => null;
+_Placeholder.Active = (_p: ComponentProps<typeof _Placeholder.Active>) => null;
 
 export const Placeholder = _Placeholder;
-
-const StyledPlaceholder = styled(Flex)<{ $isFocus?: boolean }>`
-  position: absolute;
-  top: 50%;
-  left: 16px;
-  transform: translateY(-50%);
-  transition: all 100ms ease-in;
-  color: #00000050;
-  user-select: none;
-  font-size: 14px;
-
-  ${({ $isFocus }) =>
-    $isFocus
-      ? css`
-          top: 0;
-          transform: translateY(0);
-          font-size: 10px;
-        `
-      : ""};
-`;

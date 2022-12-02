@@ -7,11 +7,9 @@
       "es2015",
       "dom"
     ],
-    "outDir": "./lib",
     "declaration": true,
-    "declarationDir": "./lib",
+    "declarationDir": "/",
     "jsx": "react",
-    "rootDir": "./src",
     "removeComments": true,
     "importHelpers": true,
     "downlevelIteration": true,

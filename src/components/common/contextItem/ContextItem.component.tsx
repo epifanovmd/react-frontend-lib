@@ -1,6 +1,5 @@
 import React, { PropsWithChildren, useCallback } from "react";
 import { IContextItemProps } from "./ContextItem.types";
-import { Flex } from "../flex";
 import { observer } from "mobx-react-lite";
 
 const _ContextItem = <T extends unknown = unknown>({
@@ -17,9 +16,9 @@ const _ContextItem = <T extends unknown = unknown>({
   );
 
   return (
-    <Flex onClick={handleClick} {...rest}>
+    <div onClick={handleClick} {...rest}>
       {children}
-    </Flex>
+    </div>
   );
 };
 

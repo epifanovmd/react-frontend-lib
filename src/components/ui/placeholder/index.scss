@@ -1,0 +1,17 @@
+.placeholder {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  transition: all 100ms ease-in;
+  color: #00000050;
+  user-select: none;
+  font-size: 14px;
+  z-index: 1;
+
+  &__focus {
+    top: 0;
+    transform: translateY(0);
+    font-size: 10px;
+  }
+}

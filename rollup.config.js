@@ -2,10 +2,11 @@ import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import external from "rollup-plugin-peer-deps-external";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import autoprefixer from "autoprefixer";
 import postcss from "rollup-plugin-postcss";
+import reactSvg from "rollup-plugin-react-svg";
 
 export default {
   input: "src/index.ts",
@@ -25,8 +26,9 @@ export default {
   plugins: [
     external(),
     babel({
+      babelHelpers: "bundled",
       exclude: "node_modules/**",
-      plugins: ["external-helpers", "babel-plugin-styled-components"],
+      plugins: ["external-helpers"],
     }),
     resolve(),
     commonjs(),
@@ -38,6 +40,15 @@ export default {
       plugins: [autoprefixer],
     }),
     terser(),
+    reactSvg({
+      svgo: {
+        plugins: [], // passed to svgo
+        multipass: true,
+      },
+      jsx: false,
+      include: null,
+      exclude: null,
+    }),
     typescript(),
   ],
 };

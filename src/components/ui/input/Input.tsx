@@ -1,39 +1,38 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import styled, { css } from "styled-components";
-import { useCompoundProps } from "../../../common";
-import { Flex, FlexProps, useFlexProps } from "../../common";
-import { Placeholder } from "../Placeholder";
+import React, {
+  ComponentProps,
+  FC,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useBooleanState, useCompoundProps } from "../../../common";
+import { Placeholder } from "../placeholder";
 import { observer } from "mobx-react-lite";
+import classNames from "classnames";
+
+import "./index.scss";
+import { EyeIcon, EyeOffIcon } from "react-frontend-lib-icons";
 
 export interface IInputProps
-  extends Omit<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      "color" | "height" | "width" | "style" | "onChange" | "onBlur" | "onFocus"
-    >,
-    FlexProps {
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   touch?: boolean;
   error?: string;
-
-  onChange?: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    name?: string,
-  ) => void;
-
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>, name?: string) => void;
-  onFocus?: (event: React.FocusEvent<HTMLInputElement>, name?: string) => void;
-
-  textarea?: boolean;
-
-  children?: React.ReactNode;
+  cnPrefix?: string;
 }
 
 interface IInputStatic {
-  Wrap: (props: React.HTMLAttributes<HTMLDivElement> & FlexProps) => null;
-  Error: (props: React.HTMLAttributes<HTMLDivElement> & FlexProps) => null;
+  Wrap: (props: React.HTMLAttributes<HTMLDivElement>) => null;
+  Error: (props: React.HTMLAttributes<HTMLDivElement>) => null;
+  Input: (props: React.InputHTMLAttributes<HTMLInputElement>) => null;
+  RightIcon: (
+    props: PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>,
+  ) => null;
   Placeholder: typeof Placeholder;
 }
 
-const _Input: FC<IInputProps> & IInputStatic = ({
+const _Input: FC<PropsWithChildren<IInputProps>> & IInputStatic = ({
   children,
   name,
   touch,
@@ -43,8 +42,13 @@ const _Input: FC<IInputProps> & IInputStatic = ({
   onBlur,
   readOnly,
   placeholder,
+  cnPrefix,
+  style,
+  className,
+  type,
   ...rest
 }) => {
+  const [visible, setVisible, setUnVisible] = useBooleanState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const innerProps = useCompoundProps(
     { children },
@@ -52,10 +56,9 @@ const _Input: FC<IInputProps> & IInputStatic = ({
     "Wrap",
     "Error",
     "Placeholder",
+    "Input",
+    "RightIcon",
   );
-
-  const { style, ownProps } = useFlexProps(rest);
-
   const [isFloating, setFloating] = useState(!value);
 
   useEffect(() => {
@@ -75,160 +78,109 @@ const _Input: FC<IInputProps> & IInputStatic = ({
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      onChange?.(event, name);
+      onChange?.(event);
       if (event.target.value) {
         setFloating(true);
       } else {
         setFloating(false);
       }
     },
-    [name, onChange],
+    [onChange],
   );
 
   const handleBlur = useCallback(
     (event: React.FocusEvent<HTMLInputElement>) => {
-      onBlur?.(event, name);
+      onBlur?.(event);
     },
-    [name, onBlur],
+    [onBlur],
   );
 
-  const handleClickPlaceholder = useCallback(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+  const handleClickPlaceholder = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      innerProps.placeholder?.onClick?.(event);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    },
+    [innerProps.placeholder],
+  );
+
+  const handleClickIcon = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      innerProps.rightIcon?.onClick?.(event);
+      if (type === "password" && !innerProps.rightIcon?.children) {
+        visible ? setUnVisible() : setVisible();
+      }
+    },
+    [innerProps.rightIcon, setUnVisible, setVisible, type, visible],
+  );
+
+  const prefix = `${classNames({ [`${cnPrefix}-`]: cnPrefix })}`;
+
+  const wrapClassNames = classNames(
+    `${prefix}input-wrap`,
+    { [`${prefix}input-wrap__read-only`]: readOnly },
+    { [`${prefix}input-wrap__error`]: Boolean(touch && error) },
+  );
+  const inputClassNames = classNames(`${prefix}input`, {
+    [`${prefix}input__read-only`]: readOnly,
+  });
+  const errorClassNames = classNames(`${prefix}input-error`);
 
   return (
-    <Wrap
-      $isReadOnlyWrap={readOnly}
-      $isError={Boolean(touch && error)}
+    <div
+      style={style}
       {...innerProps.wrap}
+      className={classNames(
+        wrapClassNames,
+        className,
+        innerProps.wrap?.className,
+      )}
     >
-      <StyledInput
+      <input
         ref={inputRef}
-        {...ownProps}
-        style={style}
+        {...rest}
+        type={visible ? undefined : type}
+        readOnly={readOnly}
+        className={classNames(inputClassNames, innerProps.input?.className)}
         placeholder={""}
-        isReadOnly={readOnly}
         onBlur={handleBlur}
         onChange={handleChange}
         onAnimationStart={onAnimationStart}
       />
-      {!readOnly && (
-        <Placeholder
-          placeholder={placeholder}
-          {...innerProps.placeholder}
-          // @ts-ignore
-          onClick={handleClickPlaceholder}
-          isFocus={isFloating || !!value}
-        />
+      {(!!innerProps?.rightIcon || type === "password") && (
+        <div
+          {...innerProps.rightIcon}
+          className={classNames(
+            `${prefix}input-right-icon`,
+            innerProps.rightIcon?.className,
+          )}
+          onClick={handleClickIcon}
+        >
+          {innerProps.rightIcon?.children ??
+            (visible ? <EyeIcon /> : <EyeOffIcon />)}
+        </div>
       )}
-      <Error {...innerProps.error}>{!readOnly && touch && error}</Error>
-    </Wrap>
+      <Placeholder
+        placeholder={placeholder}
+        isFocus={isFloating || !!value}
+        {...innerProps.placeholder}
+        onClick={handleClickPlaceholder}
+      />
+      <div
+        {...innerProps.error}
+        className={classNames(errorClassNames, innerProps.error?.className)}
+      >
+        {!readOnly && touch && error}
+      </div>
+    </div>
   );
 };
 
-_Input.Wrap = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
-  null;
-_Input.Placeholder = (_props => null) as typeof Placeholder;
-_Input.Error = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
-  null;
+_Input.Wrap = (_p: ComponentProps<typeof _Input.Wrap>) => null;
+_Input.Error = (_p: ComponentProps<typeof _Input.Error>) => null;
+_Input.Input = (_p: ComponentProps<typeof _Input.Input>) => null;
+_Input.RightIcon = (_p: ComponentProps<typeof _Input.RightIcon>) => null;
+_Input.Placeholder = Placeholder;
 
 export const Input = observer(_Input) as typeof _Input;
-
-const Wrap = styled(Flex)<{ $isError?: boolean; $isReadOnlyWrap?: boolean }>`
-  background: transparent;
-  border: 1px solid ${({ $isError }) => ($isError ? "red" : "#0000001f")};
-
-  ${({ $isReadOnlyWrap }) =>
-    $isReadOnlyWrap
-      ? css`
-          cursor: default;
-          border: none;
-        `
-      : ""};
-  width: 100%;
-  min-width: 320px;
-  position: relative;
-  cursor: text;
-  border-radius: 8px;
-`;
-
-const Error = styled(Flex)`
-  font-size: 11px;
-  color: red;
-  position: absolute;
-
-  bottom: 0;
-  left: 16px;
-`;
-
-const StyledInput = styled.input<{ isReadOnly?: boolean }>`
-  background: transparent;
-  outline: none;
-  border: none;
-  width: 100%;
-  padding: 16px;
-  font-size: 14px;
-
-  @keyframes onAutoFillStart {
-    // Workaround to force nesting this keyframe
-    0% {
-      position: relative;
-    }
-    100% {
-      position: relative;
-    }
-  }
-  @keyframes onAutoFillCancel {
-    // Workaround to force nesting this keyframe
-    0% {
-      position: relative;
-    }
-    100% {
-      position: relative;
-    }
-  }
-
-  &:-webkit-autofill {
-    // Expose a hook for JavaScript when auto fill is shown.
-    // JavaScript can capture 'animationstart' events
-    animation: onAutoFillStart 5000s linear;
-  }
-
-  // Expose a hook for JS onAutoFillCancel
-  // JavaScript can capture 'animationstart' events
-  animation: onAutoFillCancel 5000s linear;
-
-  &:invalid {
-    box-shadow: none;
-  }
-
-  &::-webkit-contacts-auto-fill-button,
-  &::-webkit-credentials-auto-fill-button {
-    visibility: hidden;
-    display: none !important;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-  }
-
-  &::-ms-clear,
-  &::-ms-reveal {
-    display: none;
-  }
-
-  ${({ isReadOnly }) =>
-    isReadOnly
-      ? css`
-          padding: 0 0 0 16px;
-        `
-      : ""};
-
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus,
-  &:-webkit-autofill:active {
-    border-radius: 8px;
-  }
-`;

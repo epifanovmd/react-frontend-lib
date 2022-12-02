@@ -1,6 +1,6 @@
 {
   "name": "react-frontend-lib",
-  "version": "1.1.9",
+  "version": "1.1.10",
   "description": "React frontend library",
   "main": "lib/index.cjs.js",
   "module": "lib/index.mjs.js",
@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@rollup/plugin-babel": "^6.0.3",
+    "classnames": "^2.3.2",
     "inversify": "^6.0.1",
     "inversify-inject-decorators": "^3.1.0",
     "inversify-react": "^1.0.2",
@@ -46,10 +47,10 @@
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
     "rc-textarea": "^0.4.7",
+    "react-frontend-lib-icons": "^1.0.1",
     "react-transition-group": "^4.4.5",
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.16",
-    "styled-components": "^5.3.6",
     "yup": "^0.29.3"
   },
   "peerDependencies": {
@@ -62,19 +63,18 @@
     "@babel/preset-typescript": "^7.18.6",
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-typescript": "^9.0.2",
+    "@rollup/plugin-terser": "^0.1.0",
+    "@rollup/plugin-typescript": "^10.0.1",
     "@types/lodash": "^4.14.190",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "@types/react-transition-group": "^4.4.5",
     "@types/shortid": "^0.0.29",
-    "@types/styled-components": "^5.1.26",
     "@types/yup": "^0.29.9",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^9.1.0",
-    "babel-plugin-styled-components": "^2.0.7",
     "eslint": "8.22.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -93,16 +93,12 @@
     "rollup": "^3.4.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-react-svg": "^3.0.3",
     "terser": "^5.16.0",
     "thread-loader": "^3.0.4",
-    "ts-loader": "^9.4.1",
     "tslib": "^2.4.1",
     "typescript": "^4.9.3",
-    "typescript-eslint-parser": "^22.0.0",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.0",
-    "webpack-node-externals": "^3.0.0"
+    "typescript-eslint-parser": "^22.0.0"
   },
   "husky": {
     "hooks": {

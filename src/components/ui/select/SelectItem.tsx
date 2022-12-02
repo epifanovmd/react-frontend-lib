@@ -1,6 +1,5 @@
 import React, { FC, useCallback } from "react";
-import styled from "styled-components";
-import { Flex, FlexProps } from "../../common";
+import classNames from "classnames";
 
 export interface ISelectItem {
   key: string | number;
@@ -9,9 +8,7 @@ export interface ISelectItem {
   [key: string]: any;
 }
 
-export interface ISelectItemProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "color" | "style">,
-    FlexProps {
+export interface ISelectItemProps extends React.HTMLAttributes<HTMLDivElement> {
   active: boolean;
   item: any;
   value: string;
@@ -34,21 +31,14 @@ export const SelectItem: FC<ISelectItemProps> = ({
   );
 
   return (
-    <Wrap {...rest} $active={active} onClick={handleSetValue}>
+    <div
+      {...rest}
+      className={classNames(rest.className, {
+        [`${rest.className}__active`]: active,
+      })}
+      onClick={handleSetValue}
+    >
       {value}
-    </Wrap>
+    </div>
   );
 };
-
-const Wrap = styled(Flex)<{ $active?: boolean }>`
-  background: ${({ $active }) => ($active ? "#f5f8fa" : "#ffffff")};
-  &:hover {
-    background: ${({ $active }) => ($active ? "#f5f8fa" : "#f5f8fa90")};
-  }
-
-  padding: 10px 19px;
-  font: normal normal normal 14px/32px Roboto;
-  letter-spacing: 0;
-  color: #222222;
-  cursor: pointer;
-`;

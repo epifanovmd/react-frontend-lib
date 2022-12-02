@@ -1,201 +1,46 @@
 import React, { FC, PropsWithChildren } from "react";
-import styled, { css } from "styled-components";
+import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import { ContextItem, FlexProps, IContextItemProps } from "../../common";
-import { useCompoundProps } from "../../../common";
+import { ContextItem, IContextItemProps } from "../../common";
+import "./index.scss";
 
-interface IDisable {
-  $disable?: boolean;
-}
-
-const Default = styled(ContextItem)<IDisable>`
-  padding: 0 16px;
-  height: 44px;
-  line-height: 42px;
-  border: 1px solid #0000;
-  border-radius: 8px;
-  box-sizing: border-box;
-  cursor: pointer;
-  font-size: 15px;
-  max-width: 100%;
-  outline: 0;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  vertical-align: middle;
-  white-space: nowrap;
-
-  background-color: #0c78ed;
-  color: #fff;
-
-  :hover {
-    background: #2284ef;
-    color: #fff;
-  }
-
-  ${({ $disable }) =>
-    $disable
-      ? css`
-          background-color: #0c78ed50;
-          color: #fff;
-          cursor: default;
-
-          :hover {
-            background-color: #0c78ed50;
-            color: #fff;
-          }
-        `
-      : ""}
-`;
-
-const Green = styled(Default)<IDisable>`
-  background-color: #36b555;
-  color: #fff;
-
-  :hover {
-    background: #5bc274;
-    color: #fff;
-  }
-
-  ${({ $disable }) =>
-    $disable
-      ? css`
-          background-color: #36b55550;
-          color: #fff;
-          cursor: default;
-
-          :hover {
-            background-color: #36b55550;
-            color: #fff;
-          }
-        `
-      : ""}
-`;
-
-const PrimaryLight = styled(Default)<IDisable>`
-  background-color: #e2effd;
-  color: #000;
-
-  :hover {
-    background: #2284ef;
-    color: #fff;
-  }
-
-  ${({ $disable }) =>
-    $disable
-      ? css`
-          background-color: #e2effd50;
-          color: #00000050;
-          cursor: default;
-
-          :hover {
-            background-color: #e2effd50;
-            color: #00000050;
-          }
-        `
-      : ""}
-`;
-
-const Gray = styled(Default)<IDisable>`
-  background-color: #efeff3;
-  color: #000;
-
-  :hover {
-    background: #0000001a;
-    color: #000;
-  }
-
-  ${({ $disable }) =>
-    $disable
-      ? css`
-          background-color: #efeff350;
-          color: #00000050;
-          cursor: default;
-
-          :hover {
-            background-color: #efeff350;
-            color: #00000050;
-          }
-        `
-      : ""}
-`;
-
-const Link = styled(Default)<IDisable>`
-  background-color: transparent;
-  color: #0c78ed;
-  height: auto;
-  line-height: initial;
-  padding: 0;
-
-  :hover {
-    background-color: transparent;
-    color: #2284ef;
-  }
-
-  ${({ $disable }) =>
-    $disable
-      ? css`
-          background-color: transparent;
-          color: #0c78ed50;
-          cursor: default;
-
-          :hover {
-            background-color: transparent;
-            color: #0c78ed50;
-            cursor: default;
-          }
-        `
-      : ""}
-`;
-
-const buttons = {
-  Default,
-  Primary: Default,
-  Green,
-  PrimaryLight,
-  Gray,
-  Link,
-};
-
-export interface IButtonProps extends FlexProps {
+export interface IButtonProps<T extends any = unknown>
+  extends Partial<IContextItemProps<T>> {
   title?: string;
-  disable?: boolean;
-  buttonStyle?: keyof typeof buttons;
+  disabled?: boolean;
+  buttonStyle?:
+    | "button-primary"
+    | "button-primary-light"
+    | "button-green"
+    | "button-gray"
+    | "button-link";
+  cnPrefix?: string;
 }
 
-interface IButtonStatic {
-  Disable: (props: IButtonProps) => null;
-}
-
-const _Button: FC<PropsWithChildren<IButtonProps>> & IButtonStatic = ({
+const _Button: FC<PropsWithChildren<IButtonProps>> = ({
   buttonStyle,
-  disable,
+  disabled,
   children,
   title,
+  cnPrefix = "",
   ...rest
 }) => {
-  const innerProps = useCompoundProps({ children }, _Button, "Disable");
-  const Button = buttons[buttonStyle || "Default"];
+  const prefix = `${classNames({ [`${cnPrefix}-`]: cnPrefix })}`;
+  const buttonClassName = `${prefix}${buttonStyle || "button-primary"}`;
 
   return (
-    <Button
+    <ContextItem
+      className={classNames(`${prefix}button`, buttonClassName, {
+        [`${buttonClassName}__disabled`]: disabled,
+      })}
       {...rest}
-      ctx={(rest as any).ctx}
-      {...(disable ? innerProps.disable : {})}
-      $disable={disable}
+      ctx={rest.ctx}
     >
       {title || children}
-    </Button>
+    </ContextItem>
   );
 };
 
-_Button.Disable = (_props: IButtonProps) => null;
-
-export const Button = observer(_Button) as (<T>(
-  props: PropsWithChildren<
-    IButtonProps & Partial<Omit<IContextItemProps<T>, keyof FlexProps>>
-  >,
-) => JSX.Element) & {
-  Disable: (_props: IButtonProps) => null;
-};
+export const Button = observer(_Button) as <T>(
+  props: PropsWithChildren<IButtonProps<T>>,
+) => JSX.Element;

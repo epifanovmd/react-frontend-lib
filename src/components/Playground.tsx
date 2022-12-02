@@ -1,9 +1,17 @@
 import React, { FC, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Input, ISelectItem, Modal, Select, Textarea } from "./ui";
+import {
+  Input,
+  ISelectItem,
+  Modal,
+  Select,
+  Textarea,
+  Button,
+  Checkbox,
+} from "./ui";
 import { useBooleanState } from "../common";
-import { Col, ContextItem } from "./common";
-import { Button } from "./ui/button";
+import { ContextItem } from "./common";
+import { CloseCircleIcon } from "react-frontend-lib-icons";
 
 export const Playground: FC = observer(() => {
   const [item, setItem] = useState<ISelectItem[]>([]);
@@ -14,7 +22,7 @@ export const Playground: FC = observer(() => {
   };
 
   return (
-    <Col paddingBottom={200}>
+    <div style={{ paddingBottom: 200 }}>
       <div>
         <div>Кнопки</div>
         <br />
@@ -22,26 +30,25 @@ export const Playground: FC = observer(() => {
         <Button ctx={{ data: "string" }} onClick={console.log}>
           Primary
         </Button>
-        <Button disable={true}>Primary Disable</Button>
+        <Button disabled={true}>Primary Disable</Button>
         <br />
-        <Button buttonStyle={"Gray"}>Gray</Button>
-        <Button disable={true} buttonStyle={"Gray"}>
+        <Button buttonStyle={"button-gray"}>Gray</Button>
+        <Button disabled={true} buttonStyle={"button-gray"}>
           Gray Disable
         </Button>
         <br />
-        <Button buttonStyle={"PrimaryLight"}>PrimaryLight</Button>
-        <Button disable={true} buttonStyle={"PrimaryLight"}>
-          <Button.Disable bg={"red"} color={"#fff"} />
+        <Button buttonStyle={"button-primary-light"}>PrimaryLight</Button>
+        <Button disabled={true} buttonStyle={"button-primary-light"}>
           PrimaryLight Disable
         </Button>
         <br />
-        <Button buttonStyle={"Green"}>Green</Button>
-        <Button disable={true} buttonStyle={"Green"}>
+        <Button buttonStyle={"button-green"}>Green</Button>
+        <Button disabled={true} buttonStyle={"button-green"}>
           Green Disable
         </Button>
         <br />
-        <Button buttonStyle={"Link"}>Green</Button>
-        <Button disable={true} buttonStyle={"Link"}>
+        <Button buttonStyle={"button-link"}>Green</Button>
+        <Button disabled={true} buttonStyle={"button-link"}>
           Green Disable
         </Button>
         <br />
@@ -57,17 +64,41 @@ export const Playground: FC = observer(() => {
       <div>Элеменнты ввода</div>
       <br />
 
+      <Checkbox title={"Чекбокс"} />
+
+      <br />
+
+      <Input
+        placeholder={"Пароль"}
+        onFocus={console.log}
+        touch={true}
+        error={"Ошибка"}
+        type={"password"}
+      >
+        <Input.Placeholder>
+          <Input.Placeholder.Active />
+        </Input.Placeholder>
+        <Input.Wrap />
+        <Input.Error />
+        <Input.RightIcon></Input.RightIcon>
+      </Input>
+
+      <br />
+
       <Input
         placeholder={"Текстовое поле"}
         onFocus={console.log}
         touch={true}
         error={"Ошибка"}
       >
-        <Input.Placeholder color={"black"}>
-          <Input.Placeholder.Active color={"green"} />
+        <Input.Placeholder>
+          <Input.Placeholder.Active />
         </Input.Placeholder>
         <Input.Wrap />
-        <Input.Error bg={"yellow"} />
+        <Input.Error />
+        <Input.RightIcon>
+          <CloseCircleIcon onClick={() => setItem([])} />
+        </Input.RightIcon>
       </Input>
       <br />
 
@@ -75,19 +106,16 @@ export const Playground: FC = observer(() => {
         autoSize={true}
         placeholder={"Текстовое поле"}
         onFocus={console.log}
-        touch={true}
-        error={"Ошибка"}
       >
-        <Textarea.Placeholder color={"black"}>
-          <Textarea.Placeholder.Active color={"green"} />
+        <Textarea.Placeholder>
+          <Textarea.Placeholder.Active />
         </Textarea.Placeholder>
         <Textarea.Wrap />
-        <Textarea.Error bg={"yellow"} />
+        <Textarea.Error />
       </Textarea>
 
       <br />
       <Select
-        mt={16}
         placeholder={"Выпадающий список"}
         selected={item}
         items={[
@@ -104,42 +132,40 @@ export const Playground: FC = observer(() => {
         error={"Ошибка"}
         onChange={onSetItem}
       >
+        <Select.Search />
         <Select.Transition timeout={200} />
-        <Select.Error color={"brown"} />
+        <Select.Error />
       </Select>
 
-      <Modal open={open} onClose={onClose}>
-        <Modal.Overlay bg={"red"} />
-        <Modal.Content bg={"yellow"} />
+      <br />
+
+      <Select
+        placeholder={"Выпадающий список"}
+        selected={item}
+        items={[
+          {
+            key: "1",
+            label: "1",
+          },
+          {
+            key: "2",
+            label: "2",
+          },
+        ]}
+        onChange={onSetItem}
+      >
+        <Select.Transition timeout={200} />
+        <Select.Icon>
+          <CloseCircleIcon onClick={() => setItem([])} />
+        </Select.Icon>
+        <Select.Error />
+      </Select>
+
+      <Modal open={open} onClose={onClose} overlayClose={true}>
+        <Modal.Overlay />
+        <Modal.Content />
         <div>Content</div>
-        <div>
-          <Select
-            mt={16}
-            placeholder={"Выпадающий список"}
-            selected={item}
-            items={[
-              {
-                key: "1",
-                label: "1",
-              },
-              {
-                key: "2",
-                label: "2",
-              },
-              {
-                key: "3",
-                label: "3",
-              },
-            ]}
-            touch={true}
-            error={"Ошибка"}
-            onChange={onSetItem}
-          >
-            <Select.Transition timeout={300} />
-            <Select.Error color={"brown"} />
-          </Select>
-        </div>
       </Modal>
-    </Col>
+    </div>
   );
 });

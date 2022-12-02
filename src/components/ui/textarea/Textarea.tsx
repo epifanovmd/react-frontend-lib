@@ -1,49 +1,29 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  ComponentProps,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import RCTextarea, { TextAreaProps } from "rc-textarea";
-import styled, { css } from "styled-components";
 import { useCompoundProps } from "../../../common";
-import { Flex, FlexProps, useFlexProps } from "../../common";
-import { Placeholder } from "../Placeholder";
+import { Placeholder } from "../placeholder";
 import { observer } from "mobx-react-lite";
+import classNames from "classnames";
 
-export interface ITextAreaProps
-  extends Omit<
-      TextAreaProps,
-      | "color"
-      | "height"
-      | "width"
-      | "style"
-      | "onChange"
-      | "onBlur"
-      | "onFocus"
-      | "wrap"
-    >,
-    FlexProps {
+import "./index.scss";
+
+export interface ITextAreaProps extends TextAreaProps {
   touch?: boolean;
   error?: string;
-
-  onChange?: (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-    name?: string,
-  ) => void;
-
-  onBlur?: (
-    event: React.FocusEvent<HTMLTextAreaElement>,
-    name?: string,
-  ) => void;
-  onFocus?: (
-    event: React.FocusEvent<HTMLTextAreaElement>,
-    name?: string,
-  ) => void;
-
-  textarea?: boolean;
-
-  children?: React.ReactNode;
+  cnPrefix?: string;
 }
 
 interface ITextAreaStatic {
-  Wrap: (props: React.HTMLAttributes<HTMLDivElement> & FlexProps) => null;
-  Error: (props: React.HTMLAttributes<HTMLDivElement> & FlexProps) => null;
+  Wrap: (props: React.HTMLAttributes<HTMLDivElement>) => null;
+  Error: (props: React.HTMLAttributes<HTMLDivElement>) => null;
+  Textarea: (props: TextAreaProps) => null;
   Placeholder: typeof Placeholder;
 }
 
@@ -57,6 +37,9 @@ const _TextArea: FC<ITextAreaProps> & ITextAreaStatic = ({
   onBlur,
   readOnly,
   placeholder,
+  cnPrefix,
+  className,
+  style,
   ...rest
 }) => {
   const inputRef = useRef<RCTextarea>(null);
@@ -66,9 +49,8 @@ const _TextArea: FC<ITextAreaProps> & ITextAreaStatic = ({
     "Wrap",
     "Error",
     "Placeholder",
+    "Textarea",
   );
-
-  const { style, ownProps } = useFlexProps(rest);
 
   const [isFloating, setFloating] = useState(!value);
 
@@ -89,21 +71,21 @@ const _TextArea: FC<ITextAreaProps> & ITextAreaStatic = ({
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange?.(event, name);
+      onChange?.(event);
       if (event.target.value) {
         setFloating(true);
       } else {
         setFloating(false);
       }
     },
-    [name, onChange],
+    [onChange],
   );
 
   const handleBlur = useCallback(
     (event: React.FocusEvent<HTMLTextAreaElement>) => {
-      onBlur?.(event, name);
+      onBlur?.(event);
     },
-    [name, onBlur],
+    [onBlur],
   );
 
   const handleClickPlaceholder = useCallback(() => {
@@ -124,19 +106,35 @@ const _TextArea: FC<ITextAreaProps> & ITextAreaStatic = ({
     [innerProps.wrap],
   );
 
+  const prefix = `${classNames({ [`${cnPrefix}-`]: cnPrefix })}`;
+
+  const wrapClassNames = classNames(
+    `${prefix}textarea-wrap`,
+    { [`${prefix}textarea-wrap__read-only`]: readOnly },
+    { [`${prefix}textarea-wrap__error`]: Boolean(touch && error) },
+  );
+  const inputClassNames = classNames(`${prefix}textarea`, {
+    [`${prefix}textarea__read-only`]: readOnly,
+  });
+  const errorClassNames = classNames(`${prefix}textarea-error`);
+
   return (
-    <Wrap
-      $isReadOnlyWrap={readOnly}
-      $isError={Boolean(touch && error)}
+    <div
+      style={style}
       {...innerProps.wrap}
+      className={classNames(
+        wrapClassNames,
+        className,
+        innerProps.wrap?.className,
+      )}
       onClick={handleClickWrap}
     >
-      <StyledTextArea
+      <RCTextarea
         ref={inputRef}
-        {...ownProps}
-        style={style}
+        {...rest}
+        readOnly={readOnly}
+        className={classNames(inputClassNames, innerProps.textarea?.className)}
         placeholder={""}
-        isReadOnly={readOnly}
         onBlur={handleBlur}
         onChange={handleChange}
         onAnimationStart={onAnimationStart}
@@ -144,123 +142,24 @@ const _TextArea: FC<ITextAreaProps> & ITextAreaStatic = ({
       {!readOnly && (
         <Placeholder
           placeholder={placeholder}
-          {...innerProps.placeholder}
-          // @ts-ignore
-          onClick={handleClickPlaceholder}
           isFocus={isFloating || !!value}
+          {...innerProps.placeholder}
+          onClick={handleClickPlaceholder}
         />
       )}
-      <Error {...innerProps.error}>{!readOnly && touch && error}</Error>
-    </Wrap>
+      <div
+        {...innerProps.error}
+        className={classNames(errorClassNames, innerProps.error?.className)}
+      >
+        {!readOnly && touch && error}
+      </div>
+    </div>
   );
 };
 
-_TextArea.Wrap = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
-  null;
-_TextArea.Placeholder = (_props => null) as typeof Placeholder;
-_TextArea.Error = (_props: React.HTMLAttributes<HTMLDivElement> & FlexProps) =>
-  null;
+_TextArea.Wrap = (_p: ComponentProps<typeof _TextArea.Wrap>) => null;
+_TextArea.Error = (_p: ComponentProps<typeof _TextArea.Error>) => null;
+_TextArea.Textarea = (_p: ComponentProps<typeof _TextArea.Textarea>) => null;
+_TextArea.Placeholder = Placeholder;
 
 export const Textarea = observer(_TextArea) as typeof _TextArea;
-
-const Wrap = styled(Flex)<{ $isError?: boolean; $isReadOnlyWrap?: boolean }>`
-  background: transparent;
-  border: 1px solid ${({ $isError }) => ($isError ? "red" : "#0000001f")};
-
-  ${({ $isReadOnlyWrap }) =>
-    $isReadOnlyWrap
-      ? css`
-          cursor: default;
-          border: none;
-        `
-      : ""};
-  width: 100%;
-  min-width: 320px;
-  position: relative;
-  cursor: text;
-  border-radius: 8px;
-`;
-
-const Error = styled(Flex)`
-  font-size: 11px;
-  color: red;
-  position: absolute;
-
-  bottom: 0;
-  left: 16px;
-`;
-
-const StyledTextArea = styled(RCTextarea)<{ isReadOnly?: boolean }>`
-  resize: none;
-  overflow: hidden;
-  background: transparent;
-  outline: none;
-  border: none;
-  width: 100%;
-  border-radius: 0;
-  margin: 16px 0;
-  font-size: 14px;
-  padding: 0 16px;
-  display: block;
-
-  @keyframes onAutoFillStart {
-    // Workaround to force nesting this keyframe
-    0% {
-      position: relative;
-    }
-    100% {
-      position: relative;
-    }
-  }
-  @keyframes onAutoFillCancel {
-    // Workaround to force nesting this keyframe
-    0% {
-      position: relative;
-    }
-    100% {
-      position: relative;
-    }
-  }
-
-  &:-webkit-autofill {
-    // Expose a hook for JavaScript when auto fill is shown.
-    // JavaScript can capture 'animationstart' events
-    animation: onAutoFillStart 5000s linear;
-  }
-
-  // Expose a hook for JS onAutoFillCancel
-  // JavaScript can capture 'animationstart' events
-  animation: onAutoFillCancel 5000s linear;
-
-  &:invalid {
-    box-shadow: none;
-  }
-
-  &::-webkit-contacts-auto-fill-button,
-  &::-webkit-credentials-auto-fill-button {
-    visibility: hidden;
-    display: none !important;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-  }
-
-  &::-ms-clear,
-  &::-ms-reveal {
-    display: none;
-  }
-
-  ${({ isReadOnly }) =>
-    isReadOnly
-      ? css`
-          padding: 0 0 0 16px;
-        `
-      : ""};
-
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus,
-  &:-webkit-autofill:active {
-    border-radius: 8px;
-  }
-`;
