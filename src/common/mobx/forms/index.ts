@@ -1,2 +1,1 @@
-export * from "./InputField.vm";
-export * from "./StringInputField.vm";
+export * from "./InputField";
