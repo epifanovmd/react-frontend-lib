@@ -1,3 +1,3 @@
 export * from "./helpers";
 export * from "./hooks";
-export * from "./holders";
+export * from "./mobx";
