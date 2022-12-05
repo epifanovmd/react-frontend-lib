@@ -4232,10 +4232,10 @@ react-error-overlay@^6.0.11:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
-react-frontend-lib-icons@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-frontend-lib-icons/-/react-frontend-lib-icons-1.0.1.tgz#0de1ace6a4d51338542f4d688bc90aa737985cdd"
-  integrity sha512-NQMydRVQALt2i/BYpbPxmEZ9KHGh2jTi/zOyh69sGtn00gDqOiezmAWAD958AwZp6Wdfb2j64Iev+VoPzjfAeg==
+react-frontend-lib-icons@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-frontend-lib-icons/-/react-frontend-lib-icons-1.0.2.tgz#223c8dbb55f845b82a56deefbf52b21d5b530fdd"
+  integrity sha512-VUQ7Xh+woj4F0L0F+pOBif06kFP1AD2YFTlIKEDStUfB0XrIUXWYjBnfCixLkkwCfobgOfV3Qa/iALKhccoY8Q==
 
 react-hooks@^1.0.1:
   version "1.0.1"

@@ -1,6 +1,6 @@
 {
   "name": "react-frontend-lib",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "React frontend library",
   "main": "lib/index.cjs.js",
   "module": "lib/index.mjs.js",
@@ -38,7 +38,6 @@
     "check-packages-updates": "yarn outdated"
   },
   "dependencies": {
-    "@rollup/plugin-babel": "^6.0.3",
     "classnames": "^2.3.2",
     "inversify": "^6.0.1",
     "inversify-inject-decorators": "^3.1.0",
@@ -47,7 +46,7 @@
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
     "rc-textarea": "^0.4.7",
-    "react-frontend-lib-icons": "^1.0.1",
+    "react-frontend-lib-icons": "^1.0.3",
     "react-transition-group": "^4.4.5",
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.16",
@@ -62,6 +61,7 @@
     "@babel/core": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.1.0",
