@@ -7,6 +7,7 @@ import typescript from "@rollup/plugin-typescript";
 import autoprefixer from "autoprefixer";
 import postcss from "rollup-plugin-postcss";
 import reactSvg from "rollup-plugin-react-svg";
+import pkg from "./package.json" assert { type: "json" };
 
 export default {
   input: "src/index.ts",
@@ -22,7 +23,7 @@ export default {
       sourcemap: true,
     },
   ],
-  external: [/node_modules/],
+  external: Object.keys(pkg.dependencies),
   plugins: [
     external(),
     babel({
