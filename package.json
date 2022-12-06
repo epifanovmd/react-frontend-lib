@@ -1,6 +1,6 @@
 {
   "name": "react-frontend-lib",
-  "version": "1.1.12",
+  "version": "1.1.13",
   "description": "React frontend library",
   "main": "lib/index.cjs.js",
   "module": "lib/index.mjs.js",
