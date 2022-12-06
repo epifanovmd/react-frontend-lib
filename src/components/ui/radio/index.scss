@@ -1,4 +1,4 @@
-.checkbox {
+.radio {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,6 +7,7 @@
   padding: 1px;
   height: 18px;
   width: 18px;
+  border-radius: 50%;
   margin-right: 16px;
 
   &-wrap {
@@ -19,7 +20,6 @@
     padding: 8px;
     border: 1px solid #0000001f;
     cursor: pointer;
-
 
     &__active {
       background: #0c78ed;

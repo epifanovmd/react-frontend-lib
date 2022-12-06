@@ -8,11 +8,11 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import { useCompoundProps } from "../../../common";
 import { CheckBoldIcon } from "react-frontend-lib-icons";
-import { CheckboxGroup } from "./CheckboxGroup";
 
 import "./index.scss";
+import { RadioGroup } from "./RadioGroup";
 
-export interface ICheckboxProps<T extends any = unknown>
+export interface IRadioProps<T extends any = unknown>
   extends Partial<Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">> {
   title?: string;
   disabled?: boolean;
@@ -23,8 +23,8 @@ export interface ICheckboxProps<T extends any = unknown>
   ctx?: T;
 }
 
-interface ICheckboxStatic {
-  Checkbox: (
+interface IRadioStatic {
+  Radio: (
     props: PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>,
   ) => null;
   Active: (props: PropsWithChildren) => null;
@@ -35,10 +35,10 @@ interface ICheckboxStatic {
   Button: (
     props: PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>,
   ) => null;
-  Group: typeof CheckboxGroup;
+  Group: typeof RadioGroup;
 }
 
-const _Checkbox: FC<PropsWithChildren<ICheckboxProps>> & ICheckboxStatic = ({
+const _Radio: FC<PropsWithChildren<IRadioProps>> & IRadioStatic = ({
   disabled,
   children,
   title,
@@ -53,8 +53,8 @@ const _Checkbox: FC<PropsWithChildren<ICheckboxProps>> & ICheckboxStatic = ({
 }) => {
   const innerProps = useCompoundProps(
     { children },
-    _Checkbox,
-    "Checkbox",
+    _Radio,
+    "Radio",
     "Active",
     "UnActive",
     "Title",
@@ -76,24 +76,22 @@ const _Checkbox: FC<PropsWithChildren<ICheckboxProps>> & ICheckboxStatic = ({
       style={style}
       {...rest}
       className={classNames(
-        `${prefix}checkbox-wrap`,
-        { [`${prefix}checkbox-button`]: !!innerProps.button },
-        {
-          [`${prefix}checkbox-button__active`]: !!innerProps.button && checked,
-        },
+        `${prefix}radio-wrap`,
+        { [`${prefix}radio-button`]: !!innerProps.button },
+        { [`${prefix}radio-button__active`]: !!innerProps.button && checked },
         className,
       )}
       onClick={onToggle}
     >
       {!innerProps.button && (
         <div
-          {...innerProps.checkbox}
+          {...innerProps.radio}
           className={classNames(
-            `${prefix}checkbox`,
+            `${prefix}radio`,
             {
-              [`${prefix}checkbox__active`]: checked,
+              [`${prefix}radio__active`]: checked,
             },
-            innerProps.checkbox?.className,
+            innerProps.radio?.className,
           )}
         >
           {checked
@@ -105,7 +103,7 @@ const _Checkbox: FC<PropsWithChildren<ICheckboxProps>> & ICheckboxStatic = ({
         <div
           {...innerProps.title}
           className={classNames(
-            `${prefix}checkbox-title`,
+            `${prefix}radio-title`,
             innerProps.title?.className,
           )}
         >
@@ -116,14 +114,14 @@ const _Checkbox: FC<PropsWithChildren<ICheckboxProps>> & ICheckboxStatic = ({
   );
 };
 
-_Checkbox.Checkbox = (_p: ComponentProps<typeof _Checkbox.Checkbox>) => null;
-_Checkbox.Active = (_p: ComponentProps<typeof _Checkbox.Active>) => null;
-_Checkbox.UnActive = (_p: ComponentProps<typeof _Checkbox.UnActive>) => null;
-_Checkbox.Title = (_p: ComponentProps<typeof _Checkbox.Title>) => null;
-_Checkbox.Button = (_p: ComponentProps<typeof _Checkbox.Button>) => null;
-_Checkbox.Group = CheckboxGroup;
+_Radio.Radio = (_p: ComponentProps<typeof _Radio.Radio>) => null;
+_Radio.Active = (_p: ComponentProps<typeof _Radio.Active>) => null;
+_Radio.UnActive = (_p: ComponentProps<typeof _Radio.UnActive>) => null;
+_Radio.Title = (_p: ComponentProps<typeof _Radio.Title>) => null;
+_Radio.Button = (_p: ComponentProps<typeof _Radio.Button>) => null;
+_Radio.Group = RadioGroup;
 
-export const Checkbox = observer(_Checkbox) as (<T>(
-  props: PropsWithChildren<ICheckboxProps<T>>,
+export const Radio = observer(_Radio) as (<T>(
+  props: PropsWithChildren<IRadioProps<T>>,
 ) => JSX.Element) &
-  ICheckboxStatic;
+  IRadioStatic;

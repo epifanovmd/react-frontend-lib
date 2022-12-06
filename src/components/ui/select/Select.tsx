@@ -129,7 +129,7 @@ export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
         setBlur(true);
       }
     },
-    [onClick, open, blur, onBlur, name],
+    [onClick, open, setClose, setOpen, blur, onBlur, name],
   );
 
   const handleSetValue = useCallback(
@@ -141,7 +141,7 @@ export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
         setBlur(true);
       }
     },
-    [open, onBlur, name, blur, onChange],
+    [onChange, name, setOpen, open, blur, onBlur],
   );
 
   const simpleValue = useMemo(() => {

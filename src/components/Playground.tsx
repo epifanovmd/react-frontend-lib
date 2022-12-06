@@ -1,13 +1,14 @@
 import React, { FC, useState } from "react";
 import { observer } from "mobx-react-lite";
 import {
+  Button,
+  Checkbox,
   Input,
   ISelectItem,
   Modal,
+  Radio,
   Select,
   Textarea,
-  Button,
-  Checkbox,
 } from "./ui";
 import { useBooleanState } from "../common";
 import { ContextItem } from "./common";
@@ -64,7 +65,152 @@ export const Playground: FC = observer(() => {
       <div>Элеменнты ввода</div>
       <br />
 
-      <Checkbox title={"Чекбокс"} />
+      <Checkbox
+        title={"Чекбокс"}
+        onChange={(checked, value, ctx) =>
+          console.log(
+            "checked = ",
+            checked,
+            ", VALUE = ",
+            value,
+            ", ctx = ",
+            ctx,
+          )
+        }
+      />
+      <Radio
+        title={"Radio button"}
+        onChange={(checked, value, ctx) =>
+          console.log(
+            "checked = ",
+            checked,
+            ", VALUE = ",
+            value,
+            ", ctx = ",
+            ctx,
+          )
+        }
+      />
+
+      <br />
+
+      <Checkbox.Group
+        defaultValue={[3]}
+        onChange={(value, ctx) =>
+          console.log("VALUE = ", value, ", ctx = ", ctx)
+        }
+        items={[
+          {
+            title: "Checkbox item 1",
+            value: 1,
+            ctx: { a: "str" },
+          },
+          {
+            title: "Checkbox item 2",
+            value: 2,
+          },
+          {
+            title: "Checkbox item 3",
+            value: 3,
+          },
+          {
+            title: "Checkbox item 4",
+            value: 4,
+          },
+        ]}
+      />
+
+      <br />
+
+      <Checkbox.Group
+        defaultValue={[2]}
+        onChange={(value, ctx) =>
+          console.log("VALUE = ", value, ", ctx = ", ctx)
+        }
+        items={[
+          {
+            title: "Checkbox button 1",
+            value: 1,
+            ctx: { a: "str" },
+          },
+          {
+            title: "Checkbox button 2",
+            value: 2,
+          },
+          {
+            title: "Checkbox button 3",
+            value: 3,
+          },
+          {
+            title: "Checkbox button 4",
+            value: 4,
+          },
+        ]}
+      >
+        <Checkbox.Group.Wrap style={{ display: "flex" }} />
+        <Checkbox.Button />
+      </Checkbox.Group>
+
+      <br />
+
+      <Radio.Group
+        onChange={(value, ctx) =>
+          console.log("VALUE = ", value, ", ctx = ", ctx)
+        }
+        defaultValue={2}
+        // value={3}
+        items={[
+          {
+            title: "Radio item 1",
+            value: 1,
+            ctx: { a: "str" },
+          },
+          {
+            title: "Radio item 2",
+            value: 2,
+          },
+          {
+            title: "Radio item 3",
+            value: 3,
+          },
+          {
+            title: "Radio item 4",
+            value: 4,
+          },
+        ]}
+      />
+
+      <br />
+
+      <Radio.Group
+        onChange={(value, ctx) =>
+          console.log("VALUE = ", value, ", ctx = ", ctx)
+        }
+        defaultValue={2}
+        // value={3}
+        items={[
+          {
+            title: "Radio button 1",
+            value: 1,
+            ctx: { a: "str" },
+          },
+          {
+            title: "Radio button 2",
+            value: 2,
+          },
+          {
+            title: "Radio button 3",
+            value: 3,
+          },
+          {
+            title: "Radio button 4",
+            value: 4,
+          },
+        ]}
+      >
+        <Radio.Group.Wrap style={{ display: "flex" }} />
+        <Radio.Button />
+      </Radio.Group>
 
       <br />
 

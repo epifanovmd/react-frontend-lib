@@ -1,5 +1,5 @@
-// this typescript helpers file
 export type CheckArray<T> = T extends any[] ? T[number] : T;
+
 export type PartialObject<T> = T extends object ? Partial<T> : T;
 
 export type SubType<Base, Condition> = Pick<
@@ -24,6 +24,11 @@ export type RecursiveObjectType<T, D extends number = 10> = [D] extends [never]
         : never;
     }[keyof T]
   : "";
+
+export type PartialKeys<T, K extends keyof T> = Omit<T, K> &
+  Partial<Pick<T, K>>;
+export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;
 
 export enum RequestType {
   GET = "get",
