@@ -432,7 +432,7 @@
 | error?    | Текст ошибки             | `string`  | `undefined`        |         |
 | cnPrefix? | Префикс для className    | `string`  | `undefined`        |         | 
 
-### Input Compound
+### Textarea Compound
 
 | Compound              | Type                                                    |
 |-----------------------|---------------------------------------------------------|
