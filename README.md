@@ -16,9 +16,7 @@
 #### example
 
 ```jsx
-<ContextItem ctx={/* some data */} onClick={(ctx, event) => {
-  console.log("ctx", ctx);
-}} /* HTMLDivAttributes */>
+<ContextItem ctx={/* some data */} onClick={(ctx, event) => {console.log("ctx", ctx)}} /* HTMLDivAttributes */>
   ...
 </ContextItem>
 ```
@@ -29,12 +27,12 @@
 
 #### Наследуется от `IContextItemProps`
 
-| Property     | Description           | Type                                                                               | Default          | Version |
-|--------------|-----------------------|------------------------------------------------------------------------------------|------------------|---------|
-| title?       | Текст                 | `string`                                                                           |                  |         |
-| disabled?    | Доступность           | `boolean`                                                                          | `false`          |         |
-| buttonStyle? | Стиль кнопок          | `button-primary` `button-primary-light` `button-green` `button-gray` `button-link` | `button-primary` |         |
-| cnPrefix? | Префикс для className           | `string`                                                                           | `undefined`      |         |
+| Property      | Description                   | Type                                                                               | Default          | Version |
+|---------------|-------------------------------|------------------------------------------------------------------------------------|------------------|---------|
+| title?        | Текст                         | `string`                                                                           |                  |         |
+| disabled?     | Доступность                   | `boolean`                                                                          | `false`          |         |
+| buttonStyle?  | Стиль кнопок                  | `button-primary` `button-primary-light` `button-green` `button-gray` `button-link` | `button-primary` |         |
+| cnPrefix?     | Префикс для className         | `string`                                                                           | `undefined`      |         |
 
 #### example
 
