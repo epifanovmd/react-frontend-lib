@@ -9,4 +9,4 @@ export * from "./numbers";
 export * from "./string";
 export * from "./typeGuards";
 export * from "./typeUtils";
-export * from "./сompound";
+export * from "./compoundProps";

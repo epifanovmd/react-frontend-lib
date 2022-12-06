@@ -1,4 +1,4 @@
-export const arrayToObjectFromKey = <
+export const groupByKeyValue = <
   A extends any[],
   Key extends keyof A[number] = keyof A[number],
 >(
