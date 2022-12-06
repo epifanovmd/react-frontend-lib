@@ -10,9 +10,9 @@ import { RequiredKeys, useCompoundProps } from "../../../common";
 
 export interface IRadioGroupProps<T extends any = unknown>
   extends Omit<IRadioProps, "onChange" | "defaultValue"> {
+  defaultValue?: string | number;
   items: RequiredKeys<IRadioProps<T>, "value">[];
   onChange?: (value: string | number, ctx?: T) => void;
-  defaultValue?: string | number;
 }
 
 interface IRadioGroupStatic {

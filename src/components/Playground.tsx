@@ -304,7 +304,13 @@ export const Playground: FC = observer(() => {
         <Select.Icon>
           <CloseCircleIcon onClick={() => setItem([])} />
         </Select.Icon>
+
         <Select.Error />
+        <Select.Placeholder />
+        <Select.Search />
+        <Select.Item />
+        <Select.List />
+        <Select.Value />
       </Select>
 
       <Modal open={open} onClose={onClose} overlayClose={true}>

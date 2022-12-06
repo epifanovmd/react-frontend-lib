@@ -14,11 +14,11 @@ import { RadioGroup } from "./RadioGroup";
 
 export interface IRadioProps<T extends any = unknown>
   extends Partial<Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">> {
-  title?: string;
-  disabled?: boolean;
-  cnPrefix?: string;
-  onChange?: (checked: boolean, value?: string | number, ctx?: T) => void;
   checked?: boolean;
+  cnPrefix?: string;
+  disabled?: boolean;
+  onChange?: (checked: boolean, value?: string | number, ctx?: T) => void;
+  title?: string;
   value?: string | number;
   ctx?: T;
 }

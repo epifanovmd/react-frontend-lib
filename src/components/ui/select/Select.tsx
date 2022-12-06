@@ -26,39 +26,39 @@ import "./index.scss";
 import "./transition.scss";
 import { ChevronDownIcon, ChevronUpIcon } from "react-frontend-lib-icons";
 
-interface IProps
+export interface ISelectProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onBlur" | "onChange"> {
-  name?: string;
-  touch?: boolean;
-  error?: string;
-  readOnly?: boolean;
-  items: ISelectItem[];
-  selected?: ISelectItem | ISelectItem[];
-  placeholder?: string;
   cnPrefix?: string;
-  onChange?: (value: ISelectItem, name?: string) => void;
+  error?: string;
+  items: ISelectItem[];
+  name?: string;
   onBlur?: (name: string) => void;
+  onChange?: (value: ISelectItem, name?: string) => void;
+  placeholder?: string;
+  readOnly?: boolean;
   renderItem?: (props: ISelectItemProps) => JSX.Element;
   renderValue?: (selected?: ISelectItem | ISelectItem[]) => JSX.Element;
+  selected?: ISelectItem | ISelectItem[];
+  touch?: boolean;
 }
 
 interface ISelectStatic {
-  Value: (props: React.HTMLAttributes<HTMLDivElement>) => null;
-  Error: (props: React.HTMLAttributes<HTMLDivElement>) => null;
-  List: (props: React.HTMLAttributes<HTMLDivElement>) => null;
-  Item: (props: ISelectItemProps) => null;
-  Placeholder: (props: IPlaceholderProps) => null;
-  Transition: (props: CSSTransitionProps) => null;
-  Search: (props: IInputProps) => null;
-  Icon: (
-    props: PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>,
-  ) => null;
   Empty: (
     props: PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>,
   ) => null;
+  Error: (props: React.HTMLAttributes<HTMLDivElement>) => null;
+  Icon: (
+    props: PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>,
+  ) => null;
+  Item: (props: Omit<ISelectItemProps, "item" | "value" | "active">) => null;
+  List: (props: React.HTMLAttributes<HTMLDivElement>) => null;
+  Placeholder: (props: IPlaceholderProps) => null;
+  Search: (props: IInputProps) => null;
+  Transition: (props: CSSTransitionProps) => null;
+  Value: (props: React.HTMLAttributes<HTMLDivElement>) => null;
 }
 
-export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
+export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
   name,
   onClick,
   touch,
@@ -134,6 +134,7 @@ export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
 
   const handleSetValue = useCallback(
     (value: ISelectItem) => {
+      innerProps.item?.onSetValue?.(value);
       onChange && onChange(value, name);
       setOpen();
       if (open && !blur) {
@@ -141,7 +142,7 @@ export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
         setBlur(true);
       }
     },
-    [onChange, name, setOpen, open, blur, onBlur],
+    [innerProps.item, onChange, name, setOpen, open, blur, onBlur],
   );
 
   const simpleValue = useMemo(() => {
@@ -307,7 +308,6 @@ export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
               })
             ) : (
               <SelectItem
-                {...innerProps.item}
                 className={classNames(
                   "select-list-item",
                   innerProps.item?.className,
@@ -316,6 +316,7 @@ export const _Select: FC<PropsWithChildren<IProps>> & ISelectStatic = ({
                 active={getActive(item)}
                 value={getValue(item)}
                 item={item}
+                {...innerProps.item}
                 onSetValue={handleSetValue}
               />
             ),
