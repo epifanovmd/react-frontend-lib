@@ -121,28 +121,33 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
 
   const toggleOpen = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      onClick?.(event);
-      open ? setClose() : setOpen();
+      if (!readOnly) {
+        onClick?.(event);
+        open ? setClose() : setOpen();
 
-      if (open && !blur) {
-        onBlur && name && onBlur(name);
-        setBlur(true);
+        if (open && !blur) {
+          onBlur && name && onBlur(name);
+          setBlur(true);
+        }
       }
     },
-    [onClick, open, setClose, setOpen, blur, onBlur, name],
+    [readOnly, onClick, open, setClose, setOpen, blur, onBlur, name],
   );
 
   const handleSetValue = useCallback(
     (value: ISelectItem) => {
-      innerProps.item?.onSetValue?.(value);
-      onChange && onChange(value, name);
-      if (open && !blur) {
-        onBlur && name && onBlur(name);
-        setBlur(true);
-      }
+      if (!readOnly) {
+        innerProps.item?.onSetValue?.(value);
 
-      if (open && isObject(selected) && !isArray(selected)) {
-        setClose();
+        onChange && onChange(value, name);
+        if (open && !blur) {
+          onBlur && name && onBlur(name);
+          setBlur(true);
+        }
+
+        if (open && isObject(selected) && !isArray(selected)) {
+          setClose();
+        }
       }
     },
     [innerProps.item, onChange, name, open, blur, selected, onBlur, setClose],
@@ -195,12 +200,14 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
 
   const searchClickHandler = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
-      event.stopPropagation();
-      if (innerProps.search?.onClick) {
-        innerProps.search.onClick(event);
+      if (!readOnly) {
+        event.stopPropagation();
+        if (innerProps.search?.onClick) {
+          innerProps.search.onClick(event);
+        }
       }
     },
-    [innerProps.search],
+    [innerProps.search, readOnly],
   );
 
   const onSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -231,15 +238,17 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
 
   const iconHandleClick = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
-      event.stopPropagation();
-      innerProps.icon?.onClick?.(event);
-      if (!innerProps.icon?.children) {
-        open ? setClose() : setOpen();
-      } else {
-        setClose();
+      if (!readOnly) {
+        event.stopPropagation();
+        innerProps.icon?.onClick?.(event);
+        if (!innerProps.icon?.children) {
+          open ? setClose() : setOpen();
+        } else {
+          setClose();
+        }
       }
     },
-    [innerProps.icon, open, setClose, setOpen],
+    [innerProps.icon, open, readOnly, setClose, setOpen],
   );
 
   return (
@@ -249,7 +258,7 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
       className={classNames(wrapClassNames, className)}
       onClick={toggleOpen}
     >
-      {innerProps.search && open && (
+      {innerProps.search && open && !readOnly && (
         <Input
           autoFocus={true}
           onClick={searchClickHandler}
@@ -258,7 +267,7 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
           {...innerProps.search}
         />
       )}
-      {!(innerProps.search && open) && (
+      {!(innerProps.search && open && !readOnly) && (
         <div
           {...innerProps.value}
           className={classNames(
@@ -278,11 +287,11 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
         onClick={iconHandleClick}
       >
         {innerProps.icon?.children ??
-          (open ? <ChevronUpIcon /> : <ChevronDownIcon />)}
+          (open && !readOnly ? <ChevronUpIcon /> : <ChevronDownIcon />)}
       </div>
       <Placeholder
         placeholder={placeholder}
-        isFocus={hasValue || (open && !!search)}
+        isFocus={(hasValue || (open && !!search)) && !readOnly}
         {...innerProps.placeholder}
       />
 
@@ -291,7 +300,7 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
         timeout={0}
         unmountOnExit={true}
         {...innerProps.transition}
-        in={open}
+        in={open && !readOnly}
       >
         <div
           {...innerProps.list}
