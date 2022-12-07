@@ -150,7 +150,17 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
         }
       }
     },
-    [innerProps.item, onChange, name, open, blur, selected, onBlur, setClose],
+    [
+      readOnly,
+      innerProps.item,
+      onChange,
+      name,
+      open,
+      blur,
+      selected,
+      onBlur,
+      setClose,
+    ],
   );
 
   const simpleValue = useMemo(() => {
