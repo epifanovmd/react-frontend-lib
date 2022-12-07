@@ -136,13 +136,16 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
     (value: ISelectItem) => {
       innerProps.item?.onSetValue?.(value);
       onChange && onChange(value, name);
-      setOpen();
       if (open && !blur) {
         onBlur && name && onBlur(name);
         setBlur(true);
       }
+
+      if (open && isObject(selected) && !isArray(selected)) {
+        setClose();
+      }
     },
-    [innerProps.item, onChange, name, setOpen, open, blur, onBlur],
+    [innerProps.item, onChange, name, open, blur, selected, onBlur, setClose],
   );
 
   const simpleValue = useMemo(() => {
