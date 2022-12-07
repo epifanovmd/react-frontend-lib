@@ -153,7 +153,7 @@ export const _Select: FC<PropsWithChildren<ISelectProps>> & ISelectStatic = ({
     }
 
     if (isObject(selected)) {
-      return selected?.key || "";
+      return selected?.label || "";
     }
 
     return "";
