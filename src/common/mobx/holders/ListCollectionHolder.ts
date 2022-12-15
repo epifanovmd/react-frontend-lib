@@ -77,7 +77,7 @@ export class ListCollectionHolder<T> implements IListEvents {
     index: 0,
     count: 0,
   };
-  private _opts!: IOptions<T>;
+  private _opts?: IOptions<T>;
   private _lastRefreshArgs?: RefreshArgs;
 
   constructor() {
@@ -132,12 +132,13 @@ export class ListCollectionHolder<T> implements IListEvents {
 
   private get _refreshArgs(): RefreshArgs {
     const visibleRange = this._visibleRange;
-    const page = this._opts.pageSize
-      ? {
-          offset: visibleRange.index,
-          pageSize: this._opts.pageSize! + visibleRange.count,
-        }
-      : undefined;
+    const page =
+      this._opts?.pageSize || 0
+        ? {
+            offset: visibleRange.index,
+            pageSize: (this._opts?.pageSize || 0) + visibleRange.count,
+          }
+        : undefined;
 
     return {
       visibleRange: { ...visibleRange },
@@ -146,7 +147,7 @@ export class ListCollectionHolder<T> implements IListEvents {
   }
 
   private get _lastPageSize(): number {
-    return (this._opts.pageSize || 0) > 0 &&
+    return (this._opts?.pageSize || 0) > 0 &&
       this._lastRefreshArgs &&
       this._lastRefreshArgs.page &&
       this._lastRefreshArgs.page.pageSize > 0
@@ -246,7 +247,7 @@ export class ListCollectionHolder<T> implements IListEvents {
     let cachedKey = (item as any)[ITEM_KEY];
 
     if (!cachedKey) {
-      cachedKey = this._opts.keyExtractor(item);
+      cachedKey = this._opts?.keyExtractor(item);
       (item as any)[ITEM_KEY] = cachedKey;
     }
 
@@ -267,13 +268,13 @@ export class ListCollectionHolder<T> implements IListEvents {
     }
   }
 
-  public performChangeVisibleRange(index: number, count: number): void {
+  public performChangeVisibleRange = (index: number, count: number): void => {
     this._visibleRange = {
       index,
       count,
     };
     this._raiseOnFetchData().then();
-  }
+  };
 
   public performRefresh() {
     if (this.isLoadingAllowed) {
@@ -327,6 +328,6 @@ export class ListCollectionHolder<T> implements IListEvents {
     this._lastRefreshArgs = this._refreshArgs;
     const args: RefreshArgs = { ...this._lastRefreshArgs };
 
-    await this._opts.onFetchData(args);
+    await this._opts?.onFetchData(args);
   }
 }

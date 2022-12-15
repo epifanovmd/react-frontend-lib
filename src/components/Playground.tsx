@@ -16,6 +16,7 @@ import { CloseCircleIcon } from "react-frontend-lib-icons";
 
 export const Playground: FC = observer(() => {
   const [item, setItem] = useState<ISelectItem[]>([]);
+  const [item1, setItem1] = useState<ISelectItem | undefined>();
   const [open, onOpen, onClose] = useBooleanState();
 
   const onSetItem = (item: ISelectItem) => {
@@ -287,7 +288,7 @@ export const Playground: FC = observer(() => {
 
       <Select
         placeholder={"Выпадающий список"}
-        selected={item}
+        selected={item1}
         items={[
           {
             key: "1",
@@ -298,11 +299,11 @@ export const Playground: FC = observer(() => {
             label: "2",
           },
         ]}
-        onChange={onSetItem}
+        onChange={setItem1}
       >
         <Select.Transition timeout={200} />
         <Select.Icon>
-          <CloseCircleIcon onClick={() => setItem([])} />
+          <CloseCircleIcon onClick={() => setItem1(undefined)} />
         </Select.Icon>
 
         <Select.Error />

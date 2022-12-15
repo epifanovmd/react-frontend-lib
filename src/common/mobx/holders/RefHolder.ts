@@ -1,8 +1,5 @@
 import { action, makeAutoObservable } from "mobx";
 
-/**
- * Используется для извлечения ссылок на что-либо из компонента.
- */
 export class RefHolder<T extends unknown> {
   private _ref?: T;
 
